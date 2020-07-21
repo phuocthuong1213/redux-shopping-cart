@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import * as Message from './../constants/Message'
-class Cart extends Component {
+class CartItem extends Component {
+
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         quantity: 1
+    //     }
+    // }
 
     render() {
-        var { item } = this.props
+        var { item } = this.props;
+        var { quantity } = item;
         return (
             <tr>
                 <th scope="row">
@@ -17,13 +25,13 @@ class Cart extends Component {
                 </td>
                 <td>{item.product.price}$</td>
                 <td className="center-on-small-only">
-                    <span className="qty">{item.quantity}</span>
+                    <span className="qty">{quantity}</span>
                     <div className="btn-group radio-group" data-toggle="buttons">
-                        <label className="btn btn-sm btn-primary
+                        <label onClick={() => { this.onUpdateQuantity(item.product, item.quantity - 1) }} className="btn btn-sm btn-primary
                                                 btn-rounded waves-effect waves-light">
-                            <a href="/#">—</a>
+                            <a href="/#" >—</a>
                         </label>
-                        <label className="btn btn-sm btn-primary
+                        <label onClick={() => { this.onUpdateQuantity(item.product, item.quantity + 1) }} className="btn btn-sm btn-primary
                                                 btn-rounded waves-effect waves-light">
                             <a href="/#">+</a>
                         </label>
@@ -46,6 +54,16 @@ class Cart extends Component {
         )
     }
 
+    onUpdateQuantity = (product, quantity) => {
+        // if (quantity > 0) {
+        //     this.setState({
+        //         quantity: quantity
+        //     });
+        // }
+        this.props.onUpdateProductInCart(product, quantity);
+        this.props.onChangeMessage(Message.MSG_UPDATE_CART_SUCCESS);
+    }
+
     onDelete = (product) => {
         var { onDeleteProductInCart, onChangeMessage } = this.props;
         onDeleteProductInCart(product);
@@ -58,4 +76,4 @@ class Cart extends Component {
 };
 
 
-export default Cart;
+export default CartItem;
